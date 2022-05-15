@@ -4,6 +4,7 @@ using AffiliateHub.Infrastructure;
 using AffiliateHub.Infrastructure.Persistence;
 using AffiliateHub.WebUI.Filters;
 using AffiliateHub.WebUI.Services;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -15,14 +16,20 @@ builder.Services.AddSingleton<ICurrentUserService, CurrentUserService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add<ApiExceptionFilterAttribute>();
-}).AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.DictionaryKeyPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
-    options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
-});
+// Disable Model State Validation, instead we use FluentValidation
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+            options.SuppressModelStateInvalidFilter = true);
+
+builder.Services
+    .AddControllers(options =>
+        {
+            options.Filters.Add<ApiExceptionFilterAttribute>();
+        })
+    .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.DictionaryKeyPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+            options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+        });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
