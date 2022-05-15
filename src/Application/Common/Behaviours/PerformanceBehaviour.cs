@@ -8,13 +8,15 @@ namespace AffiliateHub.Application.Common.Behaviours;
 public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
     private readonly Stopwatch _timer;
+    private readonly ICurrentUserService _currentUserService;
     private readonly ILogger<TRequest> _logger;
 
     public PerformanceBehaviour(
-        ILogger<TRequest> logger)
+        ILogger<TRequest> logger,
+        ICurrentUserService currentUserService)
     {
         _timer = new Stopwatch();
-
+        _currentUserService = currentUserService;
         _logger = logger;
     }
 
@@ -31,9 +33,10 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
         if (elapsedMilliseconds > 500)
         {
             var requestName = typeof(TRequest).Name;
+            var userId = _currentUserService.UserId ?? string.Empty;
 
-            _logger.LogWarning("AffiliateHub Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@Request}",
-                requestName, elapsedMilliseconds, request);
+            _logger.LogWarning("AffiliateHub Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@Request}",
+                requestName, elapsedMilliseconds, userId, request);
         }
 
         return response;
