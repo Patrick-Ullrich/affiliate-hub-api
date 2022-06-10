@@ -18,5 +18,12 @@ public class ValidationException : Exception
             .ToDictionary(failureGroup => Char.ToLowerInvariant(failureGroup.Key[0]) + failureGroup.Key.Substring(1), failureGroup => failureGroup.ToArray());
     }
 
+    public ValidationException(string propertyName, string errorMessage)
+        : this()
+    {
+        var propertyNameKey = Char.ToLowerInvariant(propertyName[0]) + propertyName.Substring(1);
+        Errors.Add(propertyNameKey, new[] { errorMessage });
+    }
+
     public IDictionary<string, string[]> Errors { get; }
 }

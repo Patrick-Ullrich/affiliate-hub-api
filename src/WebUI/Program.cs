@@ -11,16 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddSingleton<ICurrentUserService, CurrentUserService>();
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
-
-// Disable Model State Validation, instead we use FluentValidation
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-            options.SuppressModelStateInvalidFilter = true);
-
 var OriginPolicy = "Application";
 builder.Services.AddCors(options =>
 {
@@ -32,6 +22,16 @@ builder.Services.AddCors(options =>
                             .AllowAnyOrigin();
                       });
 });
+
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddSingleton<ICurrentUserService, CurrentUserService>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
+
+// Disable Model State Validation, instead we use FluentValidation
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+            options.SuppressModelStateInvalidFilter = true);
 
 
 builder.Services

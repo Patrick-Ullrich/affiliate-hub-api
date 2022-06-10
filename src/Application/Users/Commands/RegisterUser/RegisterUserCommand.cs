@@ -7,7 +7,7 @@ using MediatR;
 
 namespace AffiliateHub.Application.Users.Commands.RegisterUser;
 
-public class RegisterUserCommand : IRequest<AuthData>
+public record RegisterUserCommand : IRequest<AuthData>
 {
     public string EmailAddress { get; set; } = string.Empty;
     public string FirstName { get; set; } = string.Empty;

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AffiliateHub.Application.Users.Commands.LoginUser;
 
-public class LoginUserCommand : IRequest<AuthData>
+public record LoginUserCommand : IRequest<AuthData>
 {
     public string EmailAddress { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;

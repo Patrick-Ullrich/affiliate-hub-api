@@ -18,6 +18,7 @@ public class AuthController : ApiControllerBase
 
     [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<AuthData>> Login(LoginUserCommand command)
     {
