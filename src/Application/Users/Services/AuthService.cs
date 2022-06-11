@@ -37,7 +37,6 @@ public class AuthService : IAuthService
             Issuer = this.issuer,
             Audience = this.audience,
             Expires = expirationTime,
-            // new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256Signature)
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
                 SecurityAlgorithms.HmacSha256Signature

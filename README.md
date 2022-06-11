@@ -39,3 +39,26 @@ Run generator
 ```
 openapi-generator-cli generate -g typescript-fetch -i http://localhost:5090/swagger/v1/swagger.json -o affiliate-hub-client --additional-properties=supportsES6=true
 ```
+
+## Docker
+
+```
+# Build
+docker build . -t affiliate-hub-api
+
+# Run
+docker run --name affiliate-hub-api -p 8081:80 affiliate-hub-api
+```
+
+## Hosting on DigitalOcean
+
+Environemtn Variables:
+
+```
+ConnectionStrings__DefaultConnection:
+Trust Server Certificate=true;SSL Mode=Require;Host=<HOST>;Port=<PORT>;Database=<DATABASE>;Username=<USERNAME>;Password=<PASSWORD>
+
+HTTP Port:
+80
+
+```

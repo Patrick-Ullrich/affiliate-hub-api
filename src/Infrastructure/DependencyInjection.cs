@@ -32,6 +32,7 @@ public static class DependencyInjection
         }
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+        services.AddScoped<ApplicationDbContextInitialiser>();
         services.AddSingleton<ProblemDetailsFactory, CustomProblemDetailsFactory>();
         services.AddSingleton<IAuthService>(
             new AuthService(
