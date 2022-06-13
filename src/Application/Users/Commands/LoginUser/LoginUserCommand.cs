@@ -20,7 +20,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthDat
     private readonly IAuthService _authService;
     private readonly IMapper _mapper;
     private readonly ILogger<LoginUserCommandHandler> _logger;
-
+    
     public LoginUserCommandHandler(IApplicationDbContext context, IAuthService authService, IMapper mapper, ILogger<LoginUserCommandHandler> logger)
     {
         _context = context;

@@ -41,7 +41,7 @@ public class UpdatePasswordCommandHandler : IRequestHandler<UpdatePasswordComman
 
         if (!_authService.VerifyPassword(request.CurrentPassword, user.Password))
         {
-            throw new ValidationException(nameof(request.CurrentPassword), $"Current Password is incorrect");
+            throw new ValidationException(nameof(request.CurrentPassword), "Current Password is incorrect");
         }
 
         user.Password = _authService.HashPassword(request.Password);

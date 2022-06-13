@@ -21,6 +21,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     }
 
     public DbSet<User> Users => Set<User>();
+    public DbSet<UserToken> UserTokens => Set<UserToken>();
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
@@ -30,12 +31,12 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
             {
                 case EntityState.Added:
                     entry.Entity.CreatedBy = _currentUserService.UserId;
-                    entry.Entity.Created = _dateTime.Now;
+                    entry.Entity.Created = _dateTime.UtcNow;
                     break;
 
                 case EntityState.Modified:
                     entry.Entity.LastModifiedBy = _currentUserService.UserId;
-                    entry.Entity.LastModified = _dateTime.Now;
+                    entry.Entity.LastModified = _dateTime.UtcNow;
                     break;
             }
         }
