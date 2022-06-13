@@ -1,5 +1,7 @@
 using AffiliateHub.Application.Users.Commands.LoginUser;
 using AffiliateHub.Application.Users.Commands.RegisterUser;
+using AffiliateHub.Application.Users.Commands.RequestPasswordReset;
+using AffiliateHub.Application.Users.Commands.PasswordReset;
 using AffiliateHub.Application.Users.Dto;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,5 +25,20 @@ public class AuthController : ApiControllerBase
     public async Task<ActionResult<AuthData>> Login(LoginUserCommand command)
     {
         return await Mediator.Send(command);
+    }
+
+    [HttpPost("request-password-reset")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<RequestTokenResponse>> RequestPasswordReset(RequestPasswordResetCommand command)
+    {
+        return await Mediator.Send(command);
+    }
+
+    [HttpPut("reset-password")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult> ResetPassword(PasswordResetCommand command)
+    {
+        await Mediator.Send(command);
+        return new OkResult();
     }
 }
