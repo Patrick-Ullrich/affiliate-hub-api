@@ -20,13 +20,18 @@ public class RequestPasswordResetCommandHandler : IRequestHandler<RequestPasswor
     private readonly IMapper _mapper;
     private readonly IAuthService _authService;
     private readonly ILogger _logger;
+    private readonly IEnvironment _environment;
+    private readonly IEmailService _emailService;
 
-    public RequestPasswordResetCommandHandler(IApplicationDbContext context, IAuthService authService, IMapper mapper, ILogger<RequestPasswordResetCommandHandler> logger)
+    public RequestPasswordResetCommandHandler(IApplicationDbContext context, IAuthService authService, IMapper mapper,
+        ILogger<RequestPasswordResetCommandHandler> logger, IEnvironment environment, IEmailService emailService)
     {
         _context = context;
         _authService = authService;
         _mapper = mapper;
         _logger = logger;
+        _environment = environment;
+        _emailService = emailService;
     }
 
     public async Task<RequestTokenResponse> Handle(RequestPasswordResetCommand request, CancellationToken cancellationToken)
@@ -36,31 +41,39 @@ public class RequestPasswordResetCommandHandler : IRequestHandler<RequestPasswor
         if (user == null)
         {
             _logger.LogInformation("Tried to reset password using email address {EmailAddress} does not exist.", request.EmailAddress);
-        }
-        else
-        {
-            // Check if we already have a request for this user and delete it if so
-            var existingUserToken = await _context.UserTokens.SingleOrDefaultAsync(ut => ut.UserId == user.Id, cancellationToken);
-
-            if (existingUserToken != null)
-            {
-                _context.UserTokens.Remove(existingUserToken);
-            }
-
-            var token = Guid.NewGuid().ToString();
-            var userToken = new UserToken
-            {
-                Id = token,
-                UserId = user.Id,
-                ExpiresAt = DateTime.UtcNow.AddHours(1)
-            };
-
-            _context.UserTokens.Add(userToken);
-            await _context.SaveChangesAsync(cancellationToken);
-
+            // We don't throw an error 
             return new RequestTokenResponse
             {
-                Token = token
+                Token = string.Empty
+            };
+        }
+
+        // Check if we already have a request for this user and delete it if so
+        var existingUserToken = await _context.UserTokens.SingleOrDefaultAsync(ut => ut.UserId == user.Id, cancellationToken);
+
+        if (existingUserToken != null)
+        {
+            _context.UserTokens.Remove(existingUserToken);
+        }
+
+        var userToken = new UserToken
+        {
+            Id = Guid.NewGuid().ToString(),
+            UserId = user.Id,
+            ExpiresAt = DateTime.UtcNow.AddHours(1)
+        };
+
+        _context.UserTokens.Add(userToken);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        await _emailService.SendEmailAsync(user.EmailAddress, user.FirstName, "Reset Password",
+            $"<p>Hi {user.FirstName}, here is your code {userToken.Id}</p>");
+
+        if (_environment.IsDevelopment())
+        {
+            return new RequestTokenResponse
+            {
+                Token = userToken.Id
             };
         }
 
