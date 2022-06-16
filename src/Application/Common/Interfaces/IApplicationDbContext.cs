@@ -6,7 +6,7 @@ namespace AffiliateHub.Application.Common.Interfaces;
 public interface IApplicationDbContext
 {
     DbSet<User> Users { get; }
-    DbSet<UserToken> UserTokens { get; }
+    DbSet<UserOneTimeCode> UserOneTimeCodes { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

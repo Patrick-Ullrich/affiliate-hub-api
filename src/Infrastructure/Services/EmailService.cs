@@ -27,7 +27,7 @@ public class EmailService : IEmailService
     {
         _logger.LogInformation("Sending email to {to} with subject {subject}", to, subject);
 
-        if (_env.IsDevelopment())
+        if (!_env.IsDevelopment())
         {
             var client = new SendGridClient(_configuration.GetValue<string>("Email:SendGridApiKey"));
             var msg = new SendGridMessage()
@@ -51,7 +51,7 @@ public class EmailService : IEmailService
         }
         else
         {
-            _logger.LogInformation("Environment is Development, email not set.");
+            _logger.LogInformation("Environment is Development, email not send.");
         }
     }
 }

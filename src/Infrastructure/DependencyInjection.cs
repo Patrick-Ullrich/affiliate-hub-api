@@ -43,8 +43,9 @@ public static class DependencyInjection
             )
         );
         services.AddTransient<IDateTime, DateTimeService>();
-        services.AddTransient<IEmailService, EmailService>();
+        services.AddScoped<IEmailService, EmailService>();
         services.AddSingleton<IEnvironment, EnvironmentService>();
+        services.AddScoped<IDomainEventService, DomainEventService>();
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>

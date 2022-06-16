@@ -18,6 +18,16 @@ From the `/src` folder:
 From the `/src` folder:
 `dotnet-ef database update --startup-project WebUI`
 
+### Undoing Migration
+
+From the `/src` folder:
+`dotnet-ef database update 0 --project Infrastructure --startup-project WebUI`
+
+### Removing Migration
+
+From the `/src` folder:
+`dotnet-ef migrations remove --project Infrastructure --startup-project WebUI`
+
 ## Generate Client
 
 Install Java

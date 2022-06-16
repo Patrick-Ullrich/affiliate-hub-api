@@ -9,5 +9,5 @@ public class User : AuditableEntity
     public string EmailAddress { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
-    public IList<UserToken> UserTokens { get; private set; } = new List<UserToken>();
+    public IList<UserOneTimeCode> UserOneTimeCodes { get; private set; } = new List<UserOneTimeCode>();
 }

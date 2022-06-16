@@ -32,23 +32,23 @@ public class PasswordResetCommandHandler : IRequestHandler<PasswordResetCommand>
 
     public async Task<Unit> Handle(PasswordResetCommand request, CancellationToken cancellationToken)
     {
-        var userToken = await _context.UserTokens.SingleOrDefaultAsync(u => u.Id == request.Token, cancellationToken);
+        var userOneTimeCode = await _context.UserOneTimeCodes.SingleOrDefaultAsync(u => u.Token == request.Token, cancellationToken);
 
-        if (userToken == null)
+        if (userOneTimeCode == null)
         {
-            throw new UnauthorizedAccessException("Invalid token");
+            throw new ValidationException(nameof(request.Token), "Token invalid or expired, please request a new token.");
         }
 
-        if (userToken.ExpiresAt < DateTime.UtcNow)
+        if (userOneTimeCode.ExpiresAt < DateTime.UtcNow)
         {
-            throw new ValidationException(nameof(request.Token), "Token expired, please request a new token");
+            throw new ValidationException(nameof(request.Token), "Token invalid or expired, please request a new token.");
         }
 
-        var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == userToken.UserId, cancellationToken);
+        var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == userOneTimeCode.UserId, cancellationToken);
 
         if (user == null)
         {
-            throw new NotFoundException(nameof(User), userToken.UserId);
+            throw new NotFoundException(nameof(User), userOneTimeCode.UserId);
         }
 
         user.Password = _authService.HashPassword(request.Password);

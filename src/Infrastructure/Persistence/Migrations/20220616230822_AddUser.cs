@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Persistence.Migrations
 {
-    public partial class AddUserAndUserToken : Migration
+    public partial class AddUser : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,11 +30,13 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserTokens",
+                name: "UserOneTimeCodes",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false),
+                    Token = table.Column<string>(type: "text", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false),
                     ExpiresAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
@@ -43,9 +45,9 @@ namespace Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserTokens", x => x.Id);
+                    table.PrimaryKey("PK_UserOneTimeCodes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserTokens_Users_UserId",
+                        name: "FK_UserOneTimeCodes_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -53,21 +55,21 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserOneTimeCodes_UserId",
+                table: "UserOneTimeCodes",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_EmailAddress",
                 table: "Users",
                 column: "EmailAddress",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserTokens_UserId",
-                table: "UserTokens",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "UserTokens");
+                name: "UserOneTimeCodes");
 
             migrationBuilder.DropTable(
                 name: "Users");

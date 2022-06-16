@@ -71,7 +71,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AffiliateHub.Domain.Entities.UserToken", b =>
+            modelBuilder.Entity("AffiliateHub.Domain.Entities.UserOneTimeCode", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -91,6 +91,14 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -99,13 +107,13 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserTokens");
+                    b.ToTable("UserOneTimeCodes");
                 });
 
-            modelBuilder.Entity("AffiliateHub.Domain.Entities.UserToken", b =>
+            modelBuilder.Entity("AffiliateHub.Domain.Entities.UserOneTimeCode", b =>
                 {
                     b.HasOne("AffiliateHub.Domain.Entities.User", "User")
-                        .WithMany("UserTokens")
+                        .WithMany("UserOneTimeCodes")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -115,7 +123,7 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("AffiliateHub.Domain.Entities.User", b =>
                 {
-                    b.Navigation("UserTokens");
+                    b.Navigation("UserOneTimeCodes");
                 });
 #pragma warning restore 612, 618
         }

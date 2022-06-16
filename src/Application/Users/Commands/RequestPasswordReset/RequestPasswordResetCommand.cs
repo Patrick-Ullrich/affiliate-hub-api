@@ -49,31 +49,34 @@ public class RequestPasswordResetCommandHandler : IRequestHandler<RequestPasswor
         }
 
         // Check if we already have a request for this user and delete it if so
-        var existingUserToken = await _context.UserTokens.SingleOrDefaultAsync(ut => ut.UserId == user.Id, cancellationToken);
+        var existingUserOneTimeCode = await _context.UserOneTimeCodes.SingleOrDefaultAsync(ut => ut.UserId == user.Id && ut.Type == UserOneTimeCodeType.PasswordReset, cancellationToken);
 
-        if (existingUserToken != null)
+        if (existingUserOneTimeCode != null)
         {
-            _context.UserTokens.Remove(existingUserToken);
+            _context.UserOneTimeCodes.Remove(existingUserOneTimeCode);
         }
 
-        var userToken = new UserToken
+        var userOneTimeCode = new UserOneTimeCode
         {
             Id = Guid.NewGuid().ToString(),
             UserId = user.Id,
+            Token = Guid.NewGuid().ToString(),
+            Type = UserOneTimeCodeType.PasswordReset,
             ExpiresAt = DateTime.UtcNow.AddHours(1)
         };
 
-        _context.UserTokens.Add(userToken);
+        _context.UserOneTimeCodes.Add(userOneTimeCode);
+
         await _context.SaveChangesAsync(cancellationToken);
 
         await _emailService.SendEmailAsync(user.EmailAddress, user.FirstName, "Reset Password",
-            $"<p>Hi {user.FirstName}, here is your code {userToken.Id}</p>");
+            $"<p>Hi {user.FirstName}, here is your code {userOneTimeCode.Token}</p>");
 
         if (_environment.IsDevelopment())
         {
             return new RequestTokenResponse
             {
-                Token = userToken.Id
+                Token = userOneTimeCode.Token
             };
         }
 
