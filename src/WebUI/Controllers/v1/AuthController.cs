@@ -2,7 +2,7 @@ using AffiliateHub.Application.Users.Commands.LoginUser;
 using AffiliateHub.Application.Users.Commands.RegisterUser;
 using AffiliateHub.Application.Users.Commands.RequestPasswordReset;
 using AffiliateHub.Application.Users.Commands.PasswordReset;
-using AffiliateHub.Application.Users.Dto;
+using AffiliateHub.Application.Users.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AffiliateHub.WebUI.Controllers;

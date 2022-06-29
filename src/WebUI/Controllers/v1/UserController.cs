@@ -1,5 +1,5 @@
 using AffiliateHub.Application.Users.Commands.UpdatePassword;
-using AffiliateHub.Application.Users.Dto;
+using AffiliateHub.Application.Users.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 namespace AffiliateHub.WebUI.Controllers;

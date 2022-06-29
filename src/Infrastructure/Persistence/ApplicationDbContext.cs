@@ -25,6 +25,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
     public DbSet<User> Users => Set<User>();
     public DbSet<UserOneTimeCode> UserOneTimeCodes => Set<UserOneTimeCode>();
+    public DbSet<FileDetail> FileDetails => Set<FileDetail>();
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {

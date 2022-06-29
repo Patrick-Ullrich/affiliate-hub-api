@@ -10,4 +10,5 @@ public class User : AuditableEntity
     public string PhoneNumber { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
     public IList<UserOneTimeCode> UserOneTimeCodes { get; private set; } = new List<UserOneTimeCode>();
+    public IList<FileDetail> FileDetails { get; private set; } = new List<FileDetail>();
 }

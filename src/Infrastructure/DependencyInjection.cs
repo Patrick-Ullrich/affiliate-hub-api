@@ -11,6 +11,7 @@ using System.Text;
 using AffiliateHub.Application.Users.Services.Interfaces;
 using AffiliateHub.Application.Users.Services;
 using Microsoft.Extensions.Configuration;
+using Amazon.S3;
 
 namespace AffiliateHub.Infrastructure;
 
@@ -44,6 +45,7 @@ public static class DependencyInjection
         );
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IFileService, FileService>();
         services.AddSingleton<IEnvironment, EnvironmentService>();
         services.AddScoped<IDomainEventService, DomainEventService>();
 
@@ -61,6 +63,11 @@ public static class DependencyInjection
                     )
                     };
                 });
+
+        Environment.SetEnvironmentVariable("AWS_ACCESS_KEY_ID", configuration["AWS:AccessKey"]);
+        Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", configuration["AWS:SecretKey"]);
+        services.AddDefaultAWSOptions(configuration.GetAWSOptions("AWS"));
+        services.AddAWSService<IAmazonS3>();
 
         return services;
     }

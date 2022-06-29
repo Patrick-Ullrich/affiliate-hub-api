@@ -1,7 +1,7 @@
 using AffiliateHub.Application.Common.Mappings;
 using AffiliateHub.Domain.Entities;
 
-namespace AffiliateHub.Application.Users.Dto
+namespace AffiliateHub.Application.Users.Dtos
 {
     public class UserDto : IMapFrom<User>
     {

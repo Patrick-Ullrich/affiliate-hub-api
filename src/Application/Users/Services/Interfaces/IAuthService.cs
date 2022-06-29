@@ -1,4 +1,4 @@
-using AffiliateHub.Application.Users.Dto;
+using AffiliateHub.Application.Users.Dtos;
 using AffiliateHub.Application.Users.Queries.GetUser;
 
 namespace AffiliateHub.Application.Users.Services.Interfaces

@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using AffiliateHub.Application.Users.Dto;
+using AffiliateHub.Application.Users.Dtos;
 using AffiliateHub.Application.Users.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;

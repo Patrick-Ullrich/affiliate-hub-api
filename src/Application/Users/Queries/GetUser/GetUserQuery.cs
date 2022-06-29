@@ -4,7 +4,7 @@ using MediatR;
 using AutoMapper.QueryableExtensions;
 using AffiliateHub.Application.Common.Exceptions;
 using AffiliateHub.Domain.Entities;
-using AffiliateHub.Application.Users.Dto;
+using AffiliateHub.Application.Users.Dtos;
 
 namespace AffiliateHub.Application.Users.Queries.GetUser;
 

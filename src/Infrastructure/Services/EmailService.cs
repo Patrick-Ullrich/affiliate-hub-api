@@ -1,6 +1,4 @@
 using AffiliateHub.Application.Common.Interfaces;
-using AffiliateHub.Infrastructure.Common;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SendGrid;

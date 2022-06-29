@@ -1,4 +1,4 @@
-namespace AffiliateHub.Application.Users.Dto
+namespace AffiliateHub.Application.Users.Dtos
 {
     public class RequestTokenResponse
     {

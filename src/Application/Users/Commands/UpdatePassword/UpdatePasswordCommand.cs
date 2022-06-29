@@ -1,6 +1,6 @@
 using AffiliateHub.Application.Common.Exceptions;
 using AffiliateHub.Application.Common.Interfaces;
-using AffiliateHub.Application.Users.Dto;
+using AffiliateHub.Application.Users.Dtos;
 using AffiliateHub.Application.Users.Services.Interfaces;
 using AffiliateHub.Domain.Entities;
 using AutoMapper;
